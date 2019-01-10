@@ -11,7 +11,7 @@ Required:
 - [nette/utils](https://packagist.org/packages/nette/utils)
 - [doctrine/orm](https://packagist.org/packages/doctrine/orm)
 
-![Translate Modal](src/Doc/image1.PNG?raw=true)
+![Paginator](src/Doc/image1.PNG?raw=true)
 
 #### Instalation
 
@@ -153,4 +153,4 @@ In Presenter where i have function createComponentTableEntity you can change pag
 	
 PaginatiorWrapped is nette Html object it's very easy edit it or adding another children
 
-![Translate Modal](src/Doc/image2.PNG?raw=true)
+![Paginator](src/Doc/image2.PNG?raw=true)
