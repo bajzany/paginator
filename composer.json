@@ -1,0 +1,33 @@
+{
+  "name": "bajzany/paginator",
+  "type": "extensions",
+  "description": "Paginator for Nette Framework",
+  "keywords": ["paginator"],
+  "homepage": "https://github.com/bajzany/paginator",
+  "license": [],
+  "authors": [
+    {
+      "name": "Radek Zíka",
+      "homepage": "http://dipcom.cz",
+      "email": "radek.zika@dipcom.cz"
+    }
+  ],
+  "support": {
+    "email": "radek.zika@dipcom.cz",
+    "issues": "https://github.com/bajzany/paginator"
+  },
+  "require": {
+    "php": "^7.2",
+    "nette/di": "^2.4",
+    "nette/application": "^2.4",
+    "nette/bootstrap": "^2.4",
+    "latte/latte": "^2.4",
+    "nette/utils": "^2.4",
+    "doctrine/orm": "^2.6"
+  },
+  "autoload": {
+    "psr-4": {
+      "Bajzany\\Paginator\\": "src/"
+    }
+  }
+}
