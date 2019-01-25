@@ -49,6 +49,11 @@ class Paginator implements IPaginator
 	protected $count = 0;
 
 	/**
+	 * @var int
+	 */
+	protected $range = 5;
+
+	/**
 	 * @var PaginatorWrapped
 	 */
 	protected $paginatorWrapped;
@@ -195,6 +200,23 @@ class Paginator implements IPaginator
 	public function getCount(): int
 	{
 		return $this->count;
+	}
+
+
+	/**
+	 * @return int
+	 */
+	public function getRange(): int
+	{
+		return $this->range;
+	}
+
+	/**
+	 * @param int $range
+	 */
+	public function setRange(int $range)
+	{
+		$this->range = $range;
 	}
 
 }

@@ -19,11 +19,6 @@ class PaginationControl extends Control
 	public $currentPage = 1;
 
 	/**
-	 * @var int
-	 */
-	private $range = 5;
-
-	/**
 	 * @var IPaginator
 	 */
 	public $paginator;
@@ -89,7 +84,7 @@ class PaginationControl extends Control
 
 		for ($page = 0; $page < $paginator->getPages(); $page++) {
 
-			if ($paginator->getCurrentPage() + $this->getRange() <= ($page + 1)) {
+			if ($paginator->getCurrentPage() + $paginator->getRange() <= ($page + 1)) {
 				if (!$afterOverRange) {
 
 					$item = $paginatorWrapped->createItem();
@@ -104,7 +99,7 @@ class PaginationControl extends Control
 				continue;
 			}
 
-			if ($paginator->getCurrentPage() - $this->getRange() >= ($page + 1)) {
+			if ($paginator->getCurrentPage() - $paginator->getRange() >= ($page + 1)) {
 				if (!$beforeOverRange) {
 					$item = $paginatorWrapped->createItem();
 					$item->getContent()->setText('...');
@@ -185,22 +180,6 @@ class PaginationControl extends Control
 	public function isRendered(): bool
 	{
 		return $this->rendered;
-	}
-
-	/**
-	 * @return int
-	 */
-	public function getRange(): int
-	{
-		return $this->range;
-	}
-
-	/**
-	 * @param int $range
-	 */
-	public function setRange(int $range)
-	{
-		$this->range = $range;
 	}
 
 }

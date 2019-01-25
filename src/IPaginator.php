@@ -92,4 +92,16 @@ interface IPaginator
 	 * @return PaginatorWrapped
 	 */
 	public function getPaginatorWrapped(): PaginatorWrapped;
+
+
+	/**
+	 * @return int
+	 */
+	public function getRange(): int;
+
+	/**
+	 * @param int $range
+	 */
+	public function setRange(int $range);
+
 }
