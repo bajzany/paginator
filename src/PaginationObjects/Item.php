@@ -11,6 +11,7 @@ use Nette\Utils\Html;
 
 class Item extends Html
 {
+
 	/**
 	 * @var Html
 	 */
@@ -26,9 +27,15 @@ class Item extends Html
 	 */
 	private $wrappedClass = '';
 
-	public function __construct($wrappedClass = '')
+	/**
+	 * @var string
+	 */
+	private $linkClass = '';
+
+	public function __construct($wrappedClass = '', $linkClass = '')
 	{
 		$this->wrappedClass = $wrappedClass;
+		$this->linkClass = $linkClass;
 		$this->wrapped = $this->createWrapped();
 	}
 
@@ -43,7 +50,8 @@ class Item extends Html
 	public function createContent()
 	{
 		$this->content = Html::el('a');
-		$this->content->setAttribute('href','#');
+		$this->content->setAttribute('href', '#');
+		$this->content->setAttribute('class', $this->getLinkClass());
 		return $this->content;
 	}
 
@@ -72,6 +80,14 @@ class Item extends Html
 	public function getContent(): Html
 	{
 		return $this->content;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getLinkClass(): string
+	{
+		return $this->linkClass;
 	}
 
 }

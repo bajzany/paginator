@@ -16,7 +16,7 @@ class PaginationControl extends Control
 	/**
 	 * @var int @persistent
 	 */
-	public $currentPage = 1;
+	public $currentPage;
 
 	/**
 	 * @var IPaginator
@@ -37,7 +37,7 @@ class PaginationControl extends Control
 	public function attached($presenter)
 	{
 		parent::attached($presenter);
-		$this->paginator->setCurrentPage($this->currentPage);
+		$this->paginator->setCurrentPage($this->currentPage ? $this->currentPage : 1);
 	}
 
 	/**
@@ -64,35 +64,35 @@ class PaginationControl extends Control
 		$paginatorWrapped = $paginator->getPaginatorWrapped();
 
 		$firstItem = $paginatorWrapped->createItem();
-		$firstItem->getContent()->addHtml($paginator->getFirstPageSymbol());
-		$firstItem->getContent()->setAttribute('href', $this->link('this', ['currentPage' => 1]));
+		$firstItem->getContent()
+			->addHtml($paginator->getFirstPageSymbol())
+			->setAttribute('href', $this->link('this', ['currentPage' => 1]));
 
 		$previous = $paginatorWrapped->createItem();
-		$previous->getContent()->addHtml($paginator->getPreviousPageSymbol());
-		$previous->getContent()->setAttribute(
-			'href',
-			$this->link(
-				'this',
-				[
-					'currentPage' => $paginator->getCurrentPage() - 1 < 1 ? 1 : $paginator->getCurrentPage() - 1,
-				]
-			)
-		);
+		$previous->getContent()
+			->addHtml($paginator->getPreviousPageSymbol())
+			->setAttribute(
+				'href',
+				$this->link(
+					'this',
+					[
+						'currentPage' => $paginator->getCurrentPage() - 1 < 1 ? 1 : $paginator->getCurrentPage() - 1,
+					]
+				)
+			);
 
 		$beforeOverRange = FALSE;
 		$afterOverRange = FALSE;
 
 		for ($page = 0; $page < $paginator->getPages(); $page++) {
-
 			if ($paginator->getCurrentPage() + $paginator->getRange() <= ($page + 1)) {
 				if (!$afterOverRange) {
 
 					$item = $paginatorWrapped->createItem();
-					$item->getContent()->setText('...');
-					$item->getContent()->setAttribute(
-						'href',
-						'#'
-					);
+					$item->getContent()
+						->setText('...')
+						->setAttribute('href', '#')
+						->setAttribute('class', '');
 
 					$afterOverRange = TRUE;
 				}
@@ -102,11 +102,10 @@ class PaginationControl extends Control
 			if ($paginator->getCurrentPage() - $paginator->getRange() >= ($page + 1)) {
 				if (!$beforeOverRange) {
 					$item = $paginatorWrapped->createItem();
-					$item->getContent()->setText('...');
-					$item->getContent()->setAttribute(
-						'href',
-						'#'
-					);
+					$item->getContent()
+						->setText('...')
+						->setAttribute('href', '#')
+						->setAttribute('class', '');
 
 					$beforeOverRange = TRUE;
 				}
@@ -117,31 +116,28 @@ class PaginationControl extends Control
 			if ($paginator->getCurrentPage() == $page + 1) {
 				$item->setWrappedClass('active');
 			}
-			$item->getContent()->setText($page + 1);
-			$item->getContent()->setAttribute(
-				'href',
-				$this->link('this', ['currentPage' => $page + 1])
-			);
+			$item->getContent()
+				->setText($page + 1)
+				->setAttribute('href', $this->link('this', ['currentPage' => $page + 1]));
 		}
 
 		$next = $paginatorWrapped->createItem();
-		$next->getContent()->addHtml($paginator->getNextPageSymbol());
-		$next->getContent()->setAttribute(
-			'href',
-			$this->link(
-				'this',
-				[
-				'currentPage' => $paginator->getCurrentPage() + 1 > $paginator->getPages() ? $paginator->getPages() : $paginator->getCurrentPage() + 1,
-				]
-			)
-		);
+		$next->getContent()
+			->addHtml($paginator->getNextPageSymbol())
+			->setAttribute(
+				'href',
+				$this->link(
+					'this',
+					[
+						'currentPage' => $paginator->getCurrentPage() + 1 > $paginator->getPages() ? $paginator->getPages() : $paginator->getCurrentPage() + 1,
+					]
+				)
+			);
 
 		$lastItem = $paginatorWrapped->createItem();
-		$lastItem->getContent()->addHtml($paginator->getLastPageSymbol());
-		$lastItem->getContent()->setAttribute(
-			'href',
-			$this->link('this', ['currentPage' => $paginator->getPages()])
-		);
+		$lastItem->getContent()
+			->addHtml($paginator->getLastPageSymbol())
+			->setAttribute('href', $this->link('this', ['currentPage' => $paginator->getPages()]));
 
 		$paginator->getPaginatorWrapped()->render();
 

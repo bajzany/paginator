@@ -11,6 +11,7 @@ use Nette\Utils\Html;
 
 class PaginatorWrapped extends Html
 {
+
 	/**
 	 * @var Html
 	 */
@@ -20,6 +21,16 @@ class PaginatorWrapped extends Html
 	 * @var string
 	 */
 	private $wrappedClass;
+
+	/**
+	 * @var string
+	 */
+	private $itemWrappedClass = '';
+
+	/**
+	 * @var string
+	 */
+	private $linkClass = '';
 
 	public function __construct($wrappedClass = 'pagination pagination-sm no-margin')
 	{
@@ -70,7 +81,7 @@ class PaginatorWrapped extends Html
 	 */
 	public function createItem()
 	{
-		$item = new Item();
+		$item = new Item($this->getItemWrappedClass(), $this->getLinkClass());
 		$this->getWrapped()->addHtml($item);
 		return $item;
 	}
@@ -91,6 +102,38 @@ class PaginatorWrapped extends Html
 	public function getWrapped(): Html
 	{
 		return $this->wrapped;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getItemWrappedClass(): string
+	{
+		return $this->itemWrappedClass;
+	}
+
+	/**
+	 * @param string $itemWrappedClass
+	 */
+	public function setItemWrappedClass(string $itemWrappedClass)
+	{
+		$this->itemWrappedClass = $itemWrappedClass;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getLinkClass(): string
+	{
+		return $this->linkClass;
+	}
+
+	/**
+	 * @param string $linkClass
+	 */
+	public function setLinkClass(string $linkClass)
+	{
+		$this->linkClass = $linkClass;
 	}
 
 }
