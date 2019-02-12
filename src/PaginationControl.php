@@ -37,7 +37,9 @@ class PaginationControl extends Control
 	public function attached($presenter)
 	{
 		parent::attached($presenter);
-		$this->paginator->setCurrentPage($this->currentPage ? $this->currentPage : 1);
+		$currentPage = $this->currentPage && $this->currentPage <= $this->paginator->getPages() ? $this->currentPage : 1;
+
+		$this->paginator->setCurrentPage($currentPage);
 	}
 
 	/**
