@@ -7,11 +7,14 @@
 
 namespace Bajzany\Paginator;
 
+use Bajzany\Paginator\Events\Listener;
 use Bajzany\Paginator\Exceptions\PaginatorException;
 use Nette\Application\UI\Control;
 
 class PaginationControl extends Control
 {
+
+	const ON_LINK_CREATE = 'ON_LINK_CREATE';
 
 	/**
 	 * @var int @persistent
@@ -28,10 +31,14 @@ class PaginationControl extends Control
 	 */
 	private $rendered = FALSE;
 
+	/** @var Listener  */
+	private $listener;
+
 	public function __construct(IPaginator $paginator, $name = NULL)
 	{
 		parent::__construct($name);
 		$this->paginator = $paginator;
+		$this->listener = new Listener();
 	}
 
 	public function attached($presenter)
@@ -65,22 +72,22 @@ class PaginationControl extends Control
 
 		$paginatorWrapped = $paginator->getPaginatorWrapped();
 
+		$currentPage = 1;
+
+		$this->listener->emit(self::ON_LINK_CREATE, $this, $currentPage, $link);
+
 		$firstItem = $paginatorWrapped->createItem();
+
 		$firstItem->getContent()
 			->addHtml($paginator->getFirstPageSymbol())
-			->setAttribute('href', $this->link('this', ['currentPage' => 1]));
+			->setAttribute('href', $this->getLink(1));
 
 		$previous = $paginatorWrapped->createItem();
 		$previous->getContent()
 			->addHtml($paginator->getPreviousPageSymbol())
 			->setAttribute(
 				'href',
-				$this->link(
-					'this',
-					[
-						'currentPage' => $paginator->getCurrentPage() - 1 < 1 ? 1 : $paginator->getCurrentPage() - 1,
-					]
-				)
+				$this->getLink($paginator->getCurrentPage() - 1 < 1 ? 1 : $paginator->getCurrentPage() - 1)
 			);
 
 		$beforeOverRange = FALSE;
@@ -120,7 +127,7 @@ class PaginationControl extends Control
 			}
 			$item->getContent()
 				->setText($page + 1)
-				->setAttribute('href', $this->link('this', ['currentPage' => $page + 1]));
+				->setAttribute('href', $this->getLink($page + 1));
 		}
 
 		$next = $paginatorWrapped->createItem();
@@ -128,18 +135,13 @@ class PaginationControl extends Control
 			->addHtml($paginator->getNextPageSymbol())
 			->setAttribute(
 				'href',
-				$this->link(
-					'this',
-					[
-						'currentPage' => $paginator->getCurrentPage() + 1 > $paginator->getPages() ? $paginator->getPages() : $paginator->getCurrentPage() + 1,
-					]
-				)
+				$this->getLink($paginator->getCurrentPage() + 1 > $paginator->getPages() ? $paginator->getPages() : $paginator->getCurrentPage() + 1)
 			);
 
 		$lastItem = $paginatorWrapped->createItem();
 		$lastItem->getContent()
 			->addHtml($paginator->getLastPageSymbol())
-			->setAttribute('href', $this->link('this', ['currentPage' => $paginator->getPages()]));
+			->setAttribute('href', $this->getLink($paginator->getPages()));
 
 		$paginator->getPaginatorWrapped()->render();
 
@@ -178,6 +180,24 @@ class PaginationControl extends Control
 	public function isRendered(): bool
 	{
 		return $this->rendered;
+	}
+
+	/**
+	 * @return Listener
+	 */
+	public function getListener(): Listener
+	{
+		return $this->listener;
+	}
+
+	/**
+	 * @param int $currentPage
+	 * @return string
+	 */
+	public function getLink(int $currentPage)
+	{
+		$this->listener->emit(self::ON_LINK_CREATE, $this, $currentPage, $link);
+		return $link;
 	}
 
 }
