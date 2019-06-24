@@ -1,6 +1,6 @@
 ### Paginator
 
-Nette paginatior for using doctrine query
+Nette paginator for using doctrine query
 
 Required:
 - php: ^7.2
@@ -13,9 +13,9 @@ Required:
 
 ![Paginator](src/Doc/image1.PNG?raw=true)
 
-#### Instalation
+#### Installation
 
-- Composer instalation
+- Composer installation
 
 		composer require bajzany/paginator dev-master
 

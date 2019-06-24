@@ -8,6 +8,8 @@
 namespace Bajzany\Paginator\DI;
 
 use Bajzany\Paginator\IPaginationControl;
+use Bajzany\Paginator\Listeners\Router;
+use Bajzany\Paginator\Statements;
 use Nette\Configurator;
 use Nette\DI\Compiler;
 use Nette\DI\CompilerExtension;
@@ -21,6 +23,13 @@ class PaginationExtension extends CompilerExtension
 
 		$builder->addDefinition($this->prefix('tableControl'))
 			->setImplement(IPaginationControl::class);
+
+		$builder->addDefinition($this->prefix('request'))
+			->setFactory(Router::class)
+			->addTag("kdyby.subscriber");
+
+		$builder->addDefinition($this->prefix('statements'))
+			->setFactory(Statements::class);
 	}
 
 	/**

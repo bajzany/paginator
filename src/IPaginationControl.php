@@ -9,9 +9,11 @@ namespace Bajzany\Paginator;
 
 interface IPaginationControl
 {
+
 	/**
 	 * @param IPaginator $paginator
 	 * @return PaginationControl
 	 */
-	public function create(IPaginator $paginator) : PaginationControl;
+	public function create(IPaginator $paginator): PaginationControl;
+
 }

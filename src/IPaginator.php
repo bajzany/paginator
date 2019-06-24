@@ -12,6 +12,7 @@ use Nette\Utils\Html;
 
 interface IPaginator
 {
+
 	/**
 	 * @param string $symbol
 	 * @return Html
@@ -60,6 +61,11 @@ interface IPaginator
 	 * @return int
 	 */
 	public function getCount(): int;
+
+	/**
+	 * @param int $count
+	 */
+	public function setCount(int $count): void;
 
 	/**
 	 * @param string $symbol

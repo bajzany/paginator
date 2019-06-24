@@ -26,13 +26,24 @@ class QueryPaginator extends Paginator
 
 	/**
 	 * @param Query $query
+	 * @return $this
+	 * @throws PaginatorException
 	 */
 	public function setQuery(Query $query)
 	{
 		$this->doctrinePaginator = new DoctrinePaginator($query);
 		$count = count($this->doctrinePaginator);
 		$this->count = $count;
+
+		if (empty($this->doctrinePaginator)) {
+			throw PaginatorException::emptyQuery();
+		}
+
+		$query->setFirstResult($this->getPageSize() * ($this->getCurrentPage() - 1));
+		$query->setMaxResults($this->getPageSize());
+
 		$this->query = $query;
+		return $this;
 	}
 
 	/**
@@ -41,26 +52,6 @@ class QueryPaginator extends Paginator
 	public function getQuery()
 	{
 		return $this->query;
-	}
-
-	/**
-	 * @param int $currentPage
-	 * @return Paginator
-	 * @throws PaginatorException]]
-	 */
-	public function setCurrentPage(int $currentPage): Paginator
-	{
-		parent::setCurrentPage($currentPage);
-
-		if (empty($this->doctrinePaginator)) {
-			throw PaginatorException::emptyQuery();
-		}
-
-		$this->query
-			->setFirstResult($this->getPageSize() * ($this->getCurrentPage() - 1)) // set the offset
-			->setMaxResults($this->getPageSize()); // set the limit
-
-		return $this;
 	}
 
 }

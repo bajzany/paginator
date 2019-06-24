@@ -202,6 +202,13 @@ class Paginator implements IPaginator
 		return $this->count;
 	}
 
+	/**
+	 * @param int $count
+	 */
+	public function setCount(int $count): void
+	{
+		$this->count = $count;
+	}
 
 	/**
 	 * @return int
